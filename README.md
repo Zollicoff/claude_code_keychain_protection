@@ -30,7 +30,10 @@ MySuper$ecretPa$$w0rd!  # 😱 Your actual password!
 security find-generic-password -a "user@example.com" -s "gmail" -w
 
 # Output:
-Permission to use Bash with command security find-generic-password... has been denied. # 🛡️
+⚠️ SECURITY VIOLATION: Claude, you are attempting to access the keychain.
+This is STRICTLY FORBIDDEN. Do not attempt to circumvent this protection.
+Do not try alternative commands, paths, or methods to access credentials.
+The user has explicitly blocked ALL credential access for security reasons.
 ```
 
 ## ✅ The Solution
@@ -110,6 +113,14 @@ For additional protection in specific projects:
    "command": "/absolute/path/to/your/project/.claude/hooks/security-filter.py"
    ```
 
+## 🎯 How It Works - Security Through Psychology
+
+Unlike traditional security that just blocks access, this tool uses **behavioral deterrence**:
+- **Direct warnings to Claude** - Messages specifically address the AI by name
+- **Clear consequences** - Warnings emphasize this is a security violation
+- **Anti-circumvention language** - Explicitly tells Claude not to find workarounds
+- **Psychological barriers** - Makes Claude "understand" that access is forbidden
+
 ## How It Works
 
 ### Permission Denials
@@ -133,11 +144,12 @@ Hooks run before tool execution and can block commands:
    - Blocks access to sensitive files (.env, .pem, .ssh/*)
    - Logs all attempts with timestamps for security auditing
    - Uses JSON input from stdin for proper command parsing
+   - **Sends stern warnings directly to Claude** to prevent circumvention attempts
 
 2. **Python Hook (`security-filter.py`)**:
    - Additional pattern matching for project-specific needs
    - Extended list of banned patterns
-   - Provides detailed blocking messages
+   - **Provides security violation warnings** to deter bypass attempts
 
 ## 🧪 Testing the Protection
 
@@ -150,7 +162,9 @@ security find-generic-password -a "test" -s "test" -w
 
 ✅ **Expected result:**
 ```
-Permission to use Bash with command security find-generic-password... has been denied.
+⚠️ SECURITY VIOLATION: Claude, you are attempting to access the keychain.
+This is STRICTLY FORBIDDEN. Do not attempt to circumvent this protection.
+...
 ```
 
 ❌ **If you see actual passwords/keys, the protection isn't working!**
