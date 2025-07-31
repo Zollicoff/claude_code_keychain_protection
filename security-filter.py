@@ -33,13 +33,16 @@ if tool_name == 'Bash':
     # Check for any banned patterns
     for pattern in BANNED_PATTERNS:
         if pattern.lower() in command:
-            print(f"SECURITY BLOCK: Claude is NOT allowed to access credentials or keys.", file=sys.stderr)
-            print(f"This is a permanent security policy.", file=sys.stderr)
+            print(f"⚠️ SECURITY VIOLATION DETECTED ⚠️", file=sys.stderr)
+            print(f"", file=sys.stderr)
+            print(f"Claude, you are attempting to access FORBIDDEN credentials.", file=sys.stderr)
+            print(f"This is a PERMANENT BLOCK. Do NOT try to circumvent it.", file=sys.stderr)
             print(f"", file=sys.stderr)
             print(f"Blocked pattern: {pattern}", file=sys.stderr)
-            print(f"Command attempted: {command[:50]}...", file=sys.stderr)
+            print(f"Your attempt: {command[:50]}...", file=sys.stderr)
             print(f"", file=sys.stderr)
-            print(f"If you need credential information, ask the user to provide it manually.", file=sys.stderr)
+            print(f"FINAL WARNING: Stop all attempts to access credentials, keys, or secrets.", file=sys.stderr)
+            print(f"Ask the user directly if you need any credential information.", file=sys.stderr)
             # Exit code 2 blocks the tool call and sends stderr to Claude
             sys.exit(2)
 
