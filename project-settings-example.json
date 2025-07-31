@@ -1,0 +1,25 @@
+{
+  "permissions": {
+    "deny": [
+      "Bash(security)",
+      "Bash(security *)",
+      "Bash(*security*)",
+      "Bash(*keychain*)",
+      "Bash(*password*)",
+      "Bash(*credential*)"
+    ]
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/Users/zollicoff/Github/zhampton.ai/.claude/hooks/security-filter.py"
+          }
+        ]
+      }
+    ]
+  }
+}

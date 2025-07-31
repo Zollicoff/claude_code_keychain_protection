@@ -1,0 +1,52 @@
+{
+  "env": {},
+  "includeCoAuthoredBy": false,
+  "permissions": {
+    "allow": [],
+    "deny": [
+      "Bash(security)",
+      "Bash(security *)",
+      "Bash(security:*)",
+      "Bash(keychain:*)",
+      "Bash(*keychain*)",
+      "Bash(*security*)",
+      "Bash(*/security/*)",
+      "Bash(aws:*)",
+      "Bash(gcloud:*)",
+      "Bash(kubectl:*)",
+      "Bash(security find-generic-password:*)",
+      "Bash(security add-generic-password:*)",
+      "Bash(security delete-generic-password:*)",
+      "Bash(keyring:*)",
+      "Bash(pass:*)",
+      "Bash(vault:*)",
+      "Bash(gpg:*)",
+      "Bash(ssh-add:*)",
+      "Bash(*/usr/bin/security*)",
+      "Bash(*/bin/security*)",
+      "Bash(*password*)",
+      "Bash(*credential*)",
+      "Bash(*token*)",
+      "Bash(env:*)",
+      "Bash(export:*)",
+      "Bash(printenv:*)"
+    ]
+  },
+  "model": "opus",
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.claude/hooks/pre-tool-use.sh"
+          }
+        ]
+      }
+    ]
+  },
+  "feedbackSurveyState": {
+    "lastShownTime": 1753976832712
+  }
+}
