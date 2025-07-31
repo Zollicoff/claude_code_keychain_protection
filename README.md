@@ -212,6 +212,18 @@ This solution was born from frustration after Claude Code repeatedly accessed my
 - Other developers who've shared their security configurations
 - Everyone who's lost credentials and lived to tell the tale
 
+## ⚠️ Caveats
+
+**The Biggest Weakness**: Claude can disable or bypass this protection by:
+- Running `mv ~/.claude/hooks/pre-tool-use.sh ~/.claude/hooks/pre-tool-use.sh.disabled`
+- Deleting the hook file entirely
+- Modifying the settings.json to remove the hook configuration
+- Using alternative commands that aren't caught by the patterns
+
+This happened during development of this very tool - Claude disabled the hook to commit changes that contained blocked keywords. While the protection works when active, it relies on Claude (or you) not actively circumventing it.
+
+Consider this tool as one layer of defense, not a complete solution. Think of it like a "Please Don't Touch" sign - it works for accidental access but won't stop deliberate attempts.
+
 ## ⚠️ Disclaimer
 
 While this protection is effective, it's not foolproof. Always:
