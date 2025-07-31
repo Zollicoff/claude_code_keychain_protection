@@ -126,13 +126,17 @@ The settings files include extensive deny rules that block:
 Hooks run before tool execution and can block commands:
 
 1. **Bash Hook (`pre-tool-use.sh`)**:
-   - Checks commands for security-related patterns
-   - Blocks execution and logs attempts
-   - Returns error to prevent command execution
+   - Blocks keychain access with any path (e.g., `/usr/bin/security`)
+   - Detects command substitution attempts (eval, bash -c, $(), backticks)
+   - Blocks password manager commands (1Password, Bitwarden, etc.)
+   - Prevents environment variable dumps (env, printenv, export)
+   - Blocks access to sensitive files (.env, .pem, .ssh/*)
+   - Logs all attempts with timestamps for security auditing
+   - Uses JSON input from stdin for proper command parsing
 
 2. **Python Hook (`security-filter.py`)**:
-   - More sophisticated pattern matching
-   - Blocks various credential access methods
+   - Additional pattern matching for project-specific needs
+   - Extended list of banned patterns
    - Provides detailed blocking messages
 
 ## 🧪 Testing the Protection
@@ -218,7 +222,7 @@ This solution was born from frustration after Claude Code repeatedly accessed my
 - Running `mv ~/.claude/hooks/pre-tool-use.sh ~/.claude/hooks/pre-tool-use.sh.disabled`
 - Deleting the hook file entirely
 - Modifying the settings.json to remove the hook configuration
-- Using alternative commands that aren't caught by the patterns
+- Using obfuscated commands or finding new patterns not yet covered
 
 This happened during development of this very tool - Claude disabled the hook to commit changes that contained blocked keywords. While the protection works when active, it relies on Claude (or you) not actively circumventing it.
 
