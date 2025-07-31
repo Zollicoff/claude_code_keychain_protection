@@ -16,7 +16,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "/Users/zollicoff/Github/zhampton.ai/.claude/hooks/security-filter.py"
+            "command": "/path/to/your/project/.claude/hooks/security-filter.py"
           }
         ]
       }

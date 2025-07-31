@@ -54,11 +54,10 @@ rm -f ~/.claude/test-security.sh
 echo "✅ Removed test commands"
 
 # Remove logs if they exist
-if [ -f ~/.claude/blocked-commands.log ]; then
+if [ -f ~/.claude/hook-debug.log ]; then
     echo -n "Remove security logs? (y/N): "
     read -r logs
     if [[ "$logs" =~ ^[Yy]$ ]]; then
-        rm -f ~/.claude/blocked-commands.log
         rm -f ~/.claude/hook-debug.log
         echo "✅ Removed log files"
     fi
