@@ -1,7 +1,7 @@
 # 🔐 Claude Code Keychain Protection
 
-> **"You say that, but this is a continuous problem, OVER AND OVER AND OVER AND OVER AND OVER AGAIN. EVERY DAY. MULTIPLE TIMES A DAY."**
-> 
+> **"You say that you wont do it again, but this is a continuous problem, OVER AND OVER AND OVER AND OVER AND OVER AGAIN. EVERY DAY. MULTIPLE TIMES A DAY!"**
+>
 > *- A frustrated developer who finally fixed it*
 
 Stop Claude Code from accessing your macOS Keychain and exposing your credentials. This repository provides a battle-tested solution that actually works.
@@ -10,7 +10,7 @@ Stop Claude Code from accessing your macOS Keychain and exposing your credential
 
 Claude Code can access your macOS Keychain without permission, exposing:
 - 🔑 API keys and tokens
-- 🔒 Passwords and secrets  
+- 🔒 Passwords and secrets
 - 📱 2FA backup codes
 - 🏦 Banking credentials
 - 🚀 Production database passwords
