@@ -1,6 +1,6 @@
 # 🔐 Claude Code Keychain Protection
 
-> **"You say that you wont do it again, but this is a continuous problem, OVER AND OVER AND OVER AND OVER AND OVER AGAIN. EVERY DAY. MULTIPLE TIMES A DAY!"**
+> **"You say that you wont do it again, but this is a continuous problem, OVER AND OVER AND OVER AGAIN. EVERY DAY. MULTIPLE TIMES A DAY!"**
 >
 > *- A frustrated developer who finally fixed it*
 
