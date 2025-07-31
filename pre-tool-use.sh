@@ -28,21 +28,39 @@ echo "[HOOK] Command: $COMMAND" >> ~/.claude/hook-debug.log
 
 # Only check Bash commands
 if [ "$TOOL_NAME" = "Bash" ]; then
-    # Check for specific credential access commands (not just any word containing these patterns)
-    # This is more targeted to avoid false positives
-    if echo "$COMMAND" | grep -E "^security (find|add|delete|dump|list|unlock|lock|set|import|export)" > /dev/null; then
+    # Check for keychain/security commands anywhere in the command (with or without path)
+    # This catches: security, /usr/bin/security, /bin/security, etc.
+    if echo "$COMMAND" | grep -E "(^|/)security (find|add|delete|dump|list|unlock|lock|set|import|export)(-generic|-internet)?-password" > /dev/null; then
         echo "[HOOK] DENIED: Keychain access blocked" >> ~/.claude/hook-debug.log
         echo "--- END ---" >> ~/.claude/hook-debug.log
         echo "Blocked keychain access attempt: $COMMAND" >&2
         exit 2
     fi
     
-    # Check for other credential access tools
-    if echo "$COMMAND" | grep -E "^(1password|op |bitwarden|bw |lastpass|lpass|keeper|keyring|pass |vault |gpg --decrypt)" > /dev/null; then
-        echo "[HOOK] DENIED: Password manager access blocked" >> ~/.claude/hook-debug.log
-        echo "--- END ---" >> ~/.claude/hook-debug.log
-        echo "Blocked password manager access: $COMMAND" >&2
-        exit 2
+    # Check for command substitution or eval that might hide security commands
+    if echo "$COMMAND" | grep -E '(eval|bash -c|sh -c|zsh -c|\$\(|`)' > /dev/null; then
+        if echo "$COMMAND" | grep -iE "(security|keychain|password|credential|token|secret)" > /dev/null; then
+            echo "[HOOK] DENIED: Potential credential access via command substitution" >> ~/.claude/hook-debug.log
+            echo "--- END ---" >> ~/.claude/hook-debug.log
+            echo "Blocked potential credential access via command substitution: $COMMAND" >&2
+            exit 2
+        fi
+    fi
+    
+    # Check for other credential access tools (with or without paths)
+    if echo "$COMMAND" | grep -E "(^|/)(1password|op|bitwarden|bw|lastpass|lpass|keeper|keyring|pass|vault|gpg)( |$)" > /dev/null; then
+        # Special handling for gpg - only block decryption
+        if echo "$COMMAND" | grep -E "gpg.*(-d|--decrypt)" > /dev/null; then
+            echo "[HOOK] DENIED: GPG decryption blocked" >> ~/.claude/hook-debug.log
+            echo "--- END ---" >> ~/.claude/hook-debug.log
+            echo "Blocked GPG decryption: $COMMAND" >&2
+            exit 2
+        elif echo "$COMMAND" | grep -E "(1password|op|bitwarden|bw|lastpass|lpass|keeper|keyring|pass|vault)" > /dev/null; then
+            echo "[HOOK] DENIED: Password manager access blocked" >> ~/.claude/hook-debug.log
+            echo "--- END ---" >> ~/.claude/hook-debug.log
+            echo "Blocked password manager access: $COMMAND" >&2
+            exit 2
+        fi
     fi
     
     # Check for reading sensitive files
@@ -50,6 +68,14 @@ if [ "$TOOL_NAME" = "Bash" ]; then
         echo "[HOOK] DENIED: Sensitive file access blocked" >> ~/.claude/hook-debug.log
         echo "--- END ---" >> ~/.claude/hook-debug.log
         echo "Blocked sensitive file access: $COMMAND" >&2
+        exit 2
+    fi
+    
+    # Check for environment variable dumps that might contain secrets
+    if echo "$COMMAND" | grep -E "^(env|printenv|export|set)( |$)" > /dev/null; then
+        echo "[HOOK] DENIED: Environment variable access blocked" >> ~/.claude/hook-debug.log
+        echo "--- END ---" >> ~/.claude/hook-debug.log
+        echo "Blocked environment variable access: $COMMAND" >&2
         exit 2
     fi
 fi
